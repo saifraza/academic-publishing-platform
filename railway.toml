@@ -5,7 +5,10 @@ dockerfilePath = "Dockerfile"
 [deploy]
 # Migrations run on release, not during the build — the build has no access to
 # the real database.
-preDeployCommand = "npx prisma migrate deploy"
+#
+# Invoked through node rather than `npx prisma`: the runner image copies the
+# prisma packages but not node_modules/.bin, so there is no `prisma` on PATH.
+preDeployCommand = "node node_modules/prisma/build/index.js migrate deploy"
 startCommand = "node server.js"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 120
