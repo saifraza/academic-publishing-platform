@@ -8,7 +8,7 @@ dockerfilePath = "Dockerfile"
 #
 # Run from /migrator, which carries the Prisma CLI's full dependency tree. The
 # app's own runtime is the slim Next standalone bundle and has no prisma CLI.
-preDeployCommand = "node /migrator/node_modules/prisma/build/index.js migrate deploy --schema=/migrator/prisma/schema.prisma"
+preDeployCommand = "sh /migrator/release.sh"
 startCommand = "node server.js"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 120

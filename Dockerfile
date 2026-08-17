@@ -45,6 +45,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 # app's standalone runtime untouched and slim.
 COPY --from=deps /app/node_modules /migrator/node_modules
 COPY --from=builder /app/prisma /migrator/prisma
+COPY --from=builder /app/scripts/release.sh /migrator/release.sh
 
 USER nextjs
 EXPOSE 3000

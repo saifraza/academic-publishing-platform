@@ -7,6 +7,17 @@ const ADMIN_EMAIL = 'admin@publisher.test'
 const ADMIN_PASSWORD = 'Publish!2026'
 
 async function main() {
+  // This seed deletes everything before inserting. It runs as part of the
+  // release step, so it must refuse to touch a database that already has
+  // content — otherwise every deploy would wipe the publisher's real work.
+  const existing = await db.publisher.count()
+  if (existing > 0 && process.env.FORCE_SEED !== 'true') {
+    console.log(
+      'Database already contains data — skipping seed. Set FORCE_SEED=true to overwrite it.',
+    )
+    return
+  }
+
   console.log('Clearing existing data…')
   await db.reviewAssignment.deleteMany()
   await db.reviewer.deleteMany()
