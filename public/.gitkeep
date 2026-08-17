@@ -1,0 +1,2 @@
+# Keeps public/ in git. The Dockerfile copies this directory, and Docker fails
+# the build if it does not exist. Static assets (logos, cover images) go here.
