@@ -10,6 +10,10 @@ export const authConfig = {
     signIn: '/admin/login',
   },
   session: { strategy: 'jwt' },
+  // Railway terminates TLS at its proxy and forwards the request, so Auth.js
+  // sees a host it did not originate and rejects it with UntrustedHost unless
+  // this is set. NEXTAUTH_URL pins what the callback URL is allowed to be.
+  trustHost: true,
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = Boolean(auth?.user)
