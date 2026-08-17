@@ -39,11 +39,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Needed so `prisma migrate deploy` can run on release
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+# The Prisma CLI pulls in a deep transitive tree (@prisma/config -> effect, ...),
+# so cherry-picking directories into the runtime does not work. Give the
+# migrator its own complete node_modules under /migrator instead, leaving the
+# app's standalone runtime untouched and slim.
+COPY --from=deps /app/node_modules /migrator/node_modules
+COPY --from=builder /app/prisma /migrator/prisma
 
 USER nextjs
 EXPOSE 3000

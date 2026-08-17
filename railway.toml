@@ -6,9 +6,9 @@ dockerfilePath = "Dockerfile"
 # Migrations run on release, not during the build — the build has no access to
 # the real database.
 #
-# Invoked through node rather than `npx prisma`: the runner image copies the
-# prisma packages but not node_modules/.bin, so there is no `prisma` on PATH.
-preDeployCommand = "node node_modules/prisma/build/index.js migrate deploy"
+# Run from /migrator, which carries the Prisma CLI's full dependency tree. The
+# app's own runtime is the slim Next standalone bundle and has no prisma CLI.
+preDeployCommand = "node /migrator/node_modules/prisma/build/index.js migrate deploy --schema=/migrator/prisma/schema.prisma"
 startCommand = "node server.js"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 120
