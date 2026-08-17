@@ -1,0 +1,13 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Migrations run on release, not during the build — the build has no access to
+# the real database.
+preDeployCommand = "npx prisma migrate deploy"
+startCommand = "node server.js"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 120
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5

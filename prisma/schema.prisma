@@ -1,0 +1,426 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Publisher — the parent organisation. Effectively a singleton (id = "default").
+// ---------------------------------------------------------------------------
+model Publisher {
+  id             String   @id @default("default")
+  name           String   @default("Academic Publishing House")
+  shortName      String   @default("APH")
+  tagline        String   @default("Open access research, peer reviewed.")
+  about          String   @default("") @db.Text
+  mission        String   @default("") @db.Text
+  vision         String   @default("") @db.Text
+  logoUrl        String?
+  faviconUrl     String?
+  primaryColor   String   @default("#0a2540")
+  addressLine1   String   @default("")
+  addressLine2   String   @default("")
+  city           String   @default("")
+  state          String   @default("")
+  country        String   @default("India")
+  postalCode     String   @default("")
+  email          String   @default("")
+  phone          String   @default("")
+  socials        Json     @default("{}")
+  registeredName String   @default("")
+  gstin          String   @default("")
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Journals — data, never hardcoded. New journals are created from the admin.
+// ---------------------------------------------------------------------------
+model Journal {
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  name           String
+  shortName      String          @default("")
+  abbreviation   String          @default("")
+  issnOnline     String?
+  issnPrint      String?
+  aimsAndScope   String          @default("") @db.Text
+  description    String          @default("") @db.Text
+  coverImageUrl  String?
+  primaryColor   String          @default("#0a2540")
+  subjectAreas   String[]        @default([])
+  frequency      Frequency       @default(QUARTERLY)
+  peerReviewType PeerReviewType  @default(DOUBLE_BLIND)
+  apcAmount      Int             @default(0)
+  apcCurrency    String          @default("INR")
+  licenseType    LicenseType     @default(CC_BY)
+  doiPrefix      String?
+  foundedYear    Int?
+  isPublished    Boolean         @default(false)
+  sortOrder      Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  volumes        Volume[]
+  articles       Article[]
+  editorialBoard EditorialMember[]
+  pages          Page[]
+  submissions    Submission[]
+  announcements  Announcement[]
+
+  @@index([isPublished, sortOrder])
+}
+
+enum Frequency {
+  MONTHLY
+  BIMONTHLY
+  QUARTERLY
+  TRIANNUAL
+  BIANNUAL
+  ANNUAL
+  CONTINUOUS
+}
+
+enum PeerReviewType {
+  SINGLE_BLIND
+  DOUBLE_BLIND
+  OPEN
+}
+
+enum LicenseType {
+  CC_BY
+  CC_BY_NC
+  CC_BY_SA
+  CC_BY_NC_ND
+  CC_BY_NC_SA
+}
+
+// ---------------------------------------------------------------------------
+// Volume / Issue hierarchy
+// ---------------------------------------------------------------------------
+model Volume {
+  id        String   @id @default(cuid())
+  journalId String
+  number    Int
+  year      Int
+  createdAt DateTime @default(now())
+
+  journal   Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  issues    Issue[]
+
+  @@unique([journalId, number])
+  @@index([journalId, year])
+}
+
+model Issue {
+  id                String    @id @default(cuid())
+  volumeId          String
+  number            Int
+  title             String    @default("")
+  coverImageUrl     String?
+  publishedAt       DateTime?
+  isPublished       Boolean   @default(false)
+  isSpecialIssue    Boolean   @default(false)
+  specialIssueTitle String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  volume            Volume    @relation(fields: [volumeId], references: [id], onDelete: Cascade)
+  articles          Article[]
+
+  @@unique([volumeId, number])
+  @@index([isPublished, publishedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Articles — the centre of gravity of the whole platform
+// ---------------------------------------------------------------------------
+model Article {
+  id                 String      @id @default(cuid())
+  journalId          String
+  issueId            String?
+  slug               String
+  title              String      @db.Text
+  subtitle           String?     @db.Text
+  abstract           String      @default("") @db.Text
+  keywords           String[]    @default([])
+  articleType        ArticleType @default(RESEARCH)
+
+  pdfUrl             String?
+  pdfSizeBytes       Int?
+  pageStart          Int?
+  pageEnd            Int?
+  articleNumber      String?
+  doi                String?
+
+  publishedAt        DateTime?
+  receivedAt         DateTime?
+  revisedAt          DateTime?
+  acceptedAt         DateTime?
+
+  viewCount          Int         @default(0)
+  downloadCount      Int         @default(0)
+  isPublished        Boolean     @default(false)
+  isFeatured         Boolean     @default(false)
+
+  references         String      @default("") @db.Text
+  fundingStatement   String      @default("") @db.Text
+  conflictOfInterest String      @default("") @db.Text
+  dataAvailability   String      @default("") @db.Text
+  acknowledgements   String      @default("") @db.Text
+
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  journal            Journal     @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  issue              Issue?      @relation(fields: [issueId], references: [id], onDelete: SetNull)
+  authors            Author[]
+
+  @@unique([journalId, slug])
+  @@index([isPublished, publishedAt])
+  @@index([journalId, isPublished])
+  @@index([doi])
+}
+
+enum ArticleType {
+  RESEARCH
+  REVIEW
+  CASE_REPORT
+  EDITORIAL
+  LETTER
+  SHORT_COMMUNICATION
+  COMMENTARY
+  SYSTEMATIC_REVIEW
+}
+
+model Author {
+  id             String  @id @default(cuid())
+  articleId      String
+  fullName       String
+  email          String?
+  affiliation    String  @default("")
+  country        String  @default("")
+  orcid          String?
+  isCorresponding Boolean @default(false)
+  order          Int     @default(0)
+
+  article        Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId, order])
+}
+
+// ---------------------------------------------------------------------------
+// Editorial board — journalId null means a publisher-level role
+// ---------------------------------------------------------------------------
+model EditorialMember {
+  id          String      @id @default(cuid())
+  journalId   String?
+  fullName    String
+  designation Designation @default(BOARD_MEMBER)
+  affiliation String      @default("")
+  country     String      @default("")
+  photoUrl    String?
+  bio         String      @default("") @db.Text
+  email       String?
+  orcid       String?
+  profileUrl  String?
+  sortOrder   Int         @default(0)
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+
+  journal     Journal?    @relation(fields: [journalId], references: [id], onDelete: Cascade)
+
+  @@index([journalId, sortOrder])
+}
+
+enum Designation {
+  EDITOR_IN_CHIEF
+  ASSOCIATE_EDITOR
+  SECTION_EDITOR
+  BOARD_MEMBER
+  MANAGING_EDITOR
+  COPY_EDITOR
+  PRODUCTION_EDITOR
+  LANGUAGE_EDITOR
+  TECHNICAL_EDITOR
+  ADVISORY_BOARD
+}
+
+// ---------------------------------------------------------------------------
+// Pages — every policy page is a DB record, so no deploy is needed to add one
+// ---------------------------------------------------------------------------
+model Page {
+  id          String   @id @default(cuid())
+  journalId   String?
+  slug        String
+  title       String
+  body        String   @default("") @db.Text
+  navGroup    String   @default("Policies")
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  showInNav   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  journal     Journal? @relation(fields: [journalId], references: [id], onDelete: Cascade)
+
+  @@unique([journalId, slug])
+  @@index([isPublished, navGroup, sortOrder])
+}
+
+// ---------------------------------------------------------------------------
+// Submissions and peer review
+// ---------------------------------------------------------------------------
+model Submission {
+  id                        String           @id @default(cuid())
+  trackingId                String           @unique
+  journalId                 String
+  manuscriptTitle           String           @db.Text
+  abstract                  String           @default("") @db.Text
+  keywords                  String[]         @default([])
+  articleType               ArticleType      @default(RESEARCH)
+
+  correspondingAuthorName   String
+  correspondingAuthorEmail  String
+  correspondingAuthorPhone  String           @default("")
+  correspondingAffiliation  String           @default("")
+  correspondingOrcid        String?
+  coAuthors                 Json             @default("[]")
+
+  manuscriptFileUrl         String?
+  coverLetterFileUrl        String?
+  supplementaryFileUrl      String?
+
+  declarationAccepted       Boolean          @default(false)
+  status                    SubmissionStatus @default(SUBMITTED)
+  internalNotes             String           @default("") @db.Text
+  assignedEditorId          String?
+
+  submittedAt               DateTime         @default(now())
+  updatedAt                 DateTime         @updatedAt
+
+  journal                   Journal          @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  assignedEditor            User?            @relation(fields: [assignedEditorId], references: [id], onDelete: SetNull)
+  reviewAssignments         ReviewAssignment[]
+
+  @@index([journalId, status])
+  @@index([status, submittedAt])
+}
+
+enum SubmissionStatus {
+  SUBMITTED
+  UNDER_SCREENING
+  UNDER_REVIEW
+  REVISION_REQUESTED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+  PUBLISHED
+}
+
+model Reviewer {
+  id          String             @id @default(cuid())
+  fullName    String
+  email       String             @unique
+  affiliation String             @default("")
+  country     String             @default("")
+  orcid       String?
+  expertise   String[]           @default([])
+  isActive    Boolean            @default(true)
+  createdAt   DateTime           @default(now())
+
+  assignments ReviewAssignment[]
+}
+
+model ReviewAssignment {
+  id               String           @id @default(cuid())
+  submissionId     String
+  reviewerId       String
+  invitedAt        DateTime         @default(now())
+  respondedAt      DateTime?
+  dueAt            DateTime?
+  submittedAt      DateTime?
+  status           ReviewStatus     @default(INVITED)
+  recommendation   Recommendation?
+  commentsToAuthor String           @default("") @db.Text
+  commentsToEditor String           @default("") @db.Text
+  reviewFileUrl    String?
+
+  submission       Submission       @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewer         Reviewer         @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId, status])
+}
+
+enum ReviewStatus {
+  INVITED
+  ACCEPTED
+  DECLINED
+  SUBMITTED
+  OVERDUE
+}
+
+enum Recommendation {
+  ACCEPT
+  MINOR_REVISION
+  MAJOR_REVISION
+  REJECT
+}
+
+// ---------------------------------------------------------------------------
+// Users
+// ---------------------------------------------------------------------------
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  passwordHash String
+  fullName     String
+  role         Role         @default(EDITOR)
+  journalIds   String[]     @default([])
+  isActive     Boolean      @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  submissions  Submission[]
+}
+
+enum Role {
+  SUPER_ADMIN
+  EDITOR
+  AUTHOR
+  REVIEWER
+}
+
+// ---------------------------------------------------------------------------
+// Announcements and contact messages
+// ---------------------------------------------------------------------------
+model Announcement {
+  id          String    @id @default(cuid())
+  journalId   String?
+  title       String
+  body        String    @default("") @db.Text
+  publishedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  isPublished Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  journal     Journal?  @relation(fields: [journalId], references: [id], onDelete: Cascade)
+
+  @@index([isPublished, publishedAt])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String   @default("")
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([isRead, createdAt])
+}

@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: 10 37 64;
+  --accent-fg: 255 255 255;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-paper text-ink-900 font-sans;
+  }
+
+  ::selection {
+    background: rgb(var(--accent) / 0.18);
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+    --tw-ring-color: rgb(var(--accent));
+  }
+}
+
+@layer components {
+  /* One place to tune the page width.
+     A fixed max-width does not scale: 1400px looks right on a laptop but leaves
+     300px of dead gutter on a 2000px monitor. This scales the padding with the
+     viewport instead, so the page keeps roughly the same proportion of the
+     screen at every size. Body text is capped separately by .prose-doc and
+     max-w-prose, so filling the width never hurts the reading measure. */
+  .shell {
+    @apply mx-auto w-full max-w-[1920px] px-5 sm:px-8 lg:px-12 xl:px-16;
+  }
+
+  .accent-text {
+    color: rgb(var(--accent));
+  }
+  .accent-bg {
+    background-color: rgb(var(--accent));
+    color: rgb(var(--accent-fg));
+  }
+  .accent-border {
+    border-color: rgb(var(--accent));
+  }
+
+  /* Body copy for policy pages and abstracts */
+  .prose-doc {
+    @apply text-[15.5px] leading-[1.75] text-ink-800;
+  }
+  .prose-doc h2 {
+    @apply font-serif text-[1.35rem] font-semibold text-ink-900 mt-9 mb-3 leading-snug;
+  }
+  .prose-doc h3 {
+    @apply font-serif text-[1.1rem] font-semibold text-ink-900 mt-7 mb-2;
+  }
+  .prose-doc p {
+    @apply mb-4;
+  }
+  .prose-doc ul {
+    @apply list-disc pl-5 mb-4 space-y-1.5;
+  }
+  .prose-doc ol {
+    @apply list-decimal pl-5 mb-4 space-y-2;
+  }
+  .prose-doc a {
+    @apply underline underline-offset-2 decoration-ink-300 hover:decoration-ink-600;
+    color: rgb(var(--accent));
+  }
+  .prose-doc strong {
+    @apply font-semibold text-ink-900;
+  }
+  .prose-doc em {
+    @apply italic;
+  }
+}
+
+/* Print — article pages should print like an offprint */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+    font-size: 11pt;
+  }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 8pt;
+    color: #555;
+  }
+}

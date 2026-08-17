@@ -1,0 +1,23 @@
+node_modules
+.next
+out
+build
+.DS_Store
+*.pem
+
+.env
+.env*.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+
+# Local dev upload fallback — never commit manuscripts
+storage/
+
+# Scratch from the harness comparison
+build-log.txt
