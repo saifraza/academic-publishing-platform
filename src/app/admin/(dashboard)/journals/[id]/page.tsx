@@ -98,6 +98,7 @@ export default async function EditJournalPage({
           apcCurrency: journal.apcCurrency,
           licenseType: journal.licenseType,
           doiPrefix: journal.doiPrefix,
+          copyrightFormUrl: journal.copyrightFormUrl,
           foundedYear: journal.foundedYear,
           primaryColor: journal.primaryColor,
           sortOrder: journal.sortOrder,

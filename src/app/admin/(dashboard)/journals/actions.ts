@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { db } from '@/lib/db'
 import { requireUser, requireAdmin, canEditJournal } from '@/auth'
 import { slugify } from '@/lib/utils'
+import { uploadFile } from '@/lib/storage'
 
 export type JournalFormState = {
   status: 'idle' | 'error' | 'success'
@@ -198,6 +199,26 @@ export async function saveJournal(
 
   const wantsPublish = d.publish === 'on'
 
+  // The blank copyright form authors download. Only replaced when a new file
+  // is chosen, so saving the form without picking one keeps the existing file.
+  let copyrightFormUrl: string | null = null
+  const copyrightFile = formData.get('copyrightFormFile')
+  if (copyrightFile instanceof File && copyrightFile.size > 0) {
+    const upload = await uploadFile(copyrightFile, {
+      prefix: 'copyright-templates',
+      maxBytes: 10 * 1024 * 1024,
+      allow: ['pdf', 'doc', 'docx'],
+    })
+    if (!upload.ok) {
+      return {
+        status: 'error',
+        message: `Copyright form: ${upload.error}`,
+        fieldErrors: { copyrightFormFile: upload.error },
+      }
+    }
+    copyrightFormUrl = upload.url
+  }
+
   const data = {
     slug,
     name: d.name.trim(),
@@ -214,6 +235,7 @@ export async function saveJournal(
     apcCurrency,
     licenseType: d.licenseType,
     doiPrefix: d.doiPrefix.trim() || null,
+    ...(copyrightFormUrl ? { copyrightFormUrl } : {}),
     foundedYear,
     primaryColor: primaryColor as string,
     sortOrder: toInt(d.sortOrder) ?? 0,

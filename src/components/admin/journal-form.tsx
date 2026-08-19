@@ -25,6 +25,7 @@ export type JournalInitial = {
   apcCurrency?: string
   licenseType?: string
   doiPrefix?: string | null
+  copyrightFormUrl?: string | null
   foundedYear?: number | null
   primaryColor?: string
   sortOrder?: number
@@ -328,6 +329,33 @@ export function JournalForm({ initial }: { initial: JournalInitial }) {
             defaultValue={initial.doiPrefix ?? ''}
             placeholder="10.12345"
             className={input}
+          />
+        </Field>
+
+        <Field
+          label="Copyright form for authors"
+          error={state.fieldErrors?.copyrightFormFile}
+          hint="The blank form authors download, sign and send back with their manuscript. Word or PDF, up to 10 MB. Until you upload one, the submission page tells authors to ask the editorial office for a copy."
+        >
+          {initial.copyrightFormUrl && (
+            <p className="mb-2 rounded-sm bg-paper-shade px-3.5 py-2 text-[12.5px] text-ink-700">
+              A form is already uploaded.{' '}
+              <a
+                href={initial.copyrightFormUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline underline-offset-2"
+              >
+                View it
+              </a>
+              . Choosing a new file replaces it.
+            </p>
+          )}
+          <input
+            type="file"
+            name="copyrightFormFile"
+            accept=".pdf,.doc,.docx"
+            className="block w-full rounded-sm border border-dashed border-ink-300 bg-paper-shade px-4 py-4 text-[13px] file:mr-3 file:rounded-sm file:border-0 file:bg-ink-900 file:px-3 file:py-1.5 file:text-[12.5px] file:font-medium file:text-white"
           />
         </Field>
       </Section>

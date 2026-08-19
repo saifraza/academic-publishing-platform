@@ -31,7 +31,7 @@ export default async function SubmissionDetailPage({
   const files = [
     ['Manuscript', submission.manuscriptFileUrl],
     ['Cover letter', submission.coverLetterFileUrl],
-    ['Supplementary material', submission.supplementaryFileUrl],
+    ['Signed copyright form', submission.copyrightFormFileUrl],
   ].filter(([, url]) => url) as [string, string][]
 
   return (

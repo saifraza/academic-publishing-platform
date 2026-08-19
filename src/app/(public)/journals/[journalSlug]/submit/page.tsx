@@ -55,6 +55,7 @@ export default async function SubmitPage({
               journalSlug={journal.slug}
               journalName={journal.name}
               apcText={apcText}
+              copyrightFormUrl={journal.copyrightFormUrl}
             />
           </div>
         </div>
@@ -68,8 +69,11 @@ export default async function SubmitPage({
               <ul className="space-y-3 text-[13px] leading-relaxed text-ink-700">
                 {[
                   'Your manuscript is anonymised — no author names or affiliations in the file itself.',
+                  'All figures and tables are placed within the manuscript document.',
                   'The abstract is under 300 words and keywords are chosen.',
                   'References follow the journal’s citation style.',
+                  'You have a cover letter ready — it is required.',
+                  'The copyright form is downloaded, signed and ready to attach — it is required.',
                   'Funding, conflicts of interest, ethics approval and data availability are all stated.',
                   'Every co-author has seen and approved this version.',
                 ].map((t) => (

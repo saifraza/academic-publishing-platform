@@ -141,27 +141,51 @@ export async function submitManuscript(
     }
   }
 
-  let coverLetterUrl: string | null = null
+  // Cover letter — required
   const coverLetter = formData.get('coverLetterFile')
-  if (coverLetter instanceof File && coverLetter.size > 0) {
-    const r = await uploadFile(coverLetter, {
-      prefix: 'cover-letters',
-      maxBytes: 10 * 1024 * 1024,
-      allow: ['pdf', 'doc', 'docx'],
-    })
-    if (!r.ok) return { status: 'error', message: `Cover letter: ${r.error}` }
-    coverLetterUrl = r.url
+  if (!(coverLetter instanceof File) || coverLetter.size === 0) {
+    return {
+      status: 'error',
+      message: 'Please attach your cover letter.',
+      fieldErrors: { coverLetterFile: 'A cover letter is required.' },
+    }
+  }
+  const coverLetterUpload = await uploadFile(coverLetter, {
+    prefix: 'cover-letters',
+    maxBytes: 10 * 1024 * 1024,
+    allow: ['pdf', 'doc', 'docx'],
+  })
+  if (!coverLetterUpload.ok) {
+    return {
+      status: 'error',
+      message: `Cover letter: ${coverLetterUpload.error}`,
+      fieldErrors: { coverLetterFile: coverLetterUpload.error },
+    }
   }
 
-  let supplementaryUrl: string | null = null
-  const supplementary = formData.get('supplementaryFile')
-  if (supplementary instanceof File && supplementary.size > 0) {
-    const r = await uploadFile(supplementary, {
-      prefix: 'supplementary',
-      maxBytes: 25 * 1024 * 1024,
-    })
-    if (!r.ok) return { status: 'error', message: `Supplementary file: ${r.error}` }
-    supplementaryUrl = r.url
+  // Signed copyright form — required
+  const copyrightForm = formData.get('copyrightFormFile')
+  if (!(copyrightForm instanceof File) || copyrightForm.size === 0) {
+    return {
+      status: 'error',
+      message: 'Please attach the completed copyright form.',
+      fieldErrors: {
+        copyrightFormFile:
+          'The signed copyright form is required. Download the template from this page, sign it, and attach it here.',
+      },
+    }
+  }
+  const copyrightUpload = await uploadFile(copyrightForm, {
+    prefix: 'copyright-forms',
+    maxBytes: 10 * 1024 * 1024,
+    allow: ['pdf', 'doc', 'docx'],
+  })
+  if (!copyrightUpload.ok) {
+    return {
+      status: 'error',
+      message: `Copyright form: ${copyrightUpload.error}`,
+      fieldErrors: { copyrightFormFile: copyrightUpload.error },
+    }
   }
 
   // ---------------------------------------------------------- Persist
@@ -184,8 +208,8 @@ export async function submitManuscript(
       correspondingOrcid: data.correspondingOrcid || null,
       coAuthors: data.coAuthors,
       manuscriptFileUrl: manuscriptUpload.url,
-      coverLetterFileUrl: coverLetterUrl,
-      supplementaryFileUrl: supplementaryUrl,
+      coverLetterFileUrl: coverLetterUpload.url,
+      copyrightFormFileUrl: copyrightUpload.url,
       declarationAccepted: true,
       status: 'SUBMITTED',
     },

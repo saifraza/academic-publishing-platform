@@ -58,6 +58,9 @@ model Journal {
   apcCurrency    String          @default("INR")
   licenseType    LicenseType     @default(CC_BY)
   doiPrefix      String?
+  // Blank copyright form template, uploaded by the publisher for authors to
+  // download, sign and return with their manuscript.
+  copyrightFormUrl String?
   foundedYear    Int?
   isPublished    Boolean         @default(false)
   sortOrder      Int             @default(0)
@@ -292,7 +295,9 @@ model Submission {
 
   manuscriptFileUrl         String?
   coverLetterFileUrl        String?
-  supplementaryFileUrl      String?
+  // The author's signed copyright form. Required at submission — figures and
+  // tables live inside the manuscript, so there is no supplementary slot.
+  copyrightFormFileUrl      String?
 
   declarationAccepted       Boolean          @default(false)
   status                    SubmissionStatus @default(SUBMITTED)

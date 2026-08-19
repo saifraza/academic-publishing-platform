@@ -635,7 +635,7 @@ async function main() {
 <h2>Declarations</h2>
 <p>Every submission must include statements on funding, conflicts of interest, ethical approval and data availability. Manuscripts reporting research on human participants must give the name of the approving committee and the approval number.</p>
 <h2>What to submit</h2>
-<p>A complete submission consists of the anonymised manuscript, a separate title page, a cover letter, and any supplementary material. Reporting checklists are required for trials, systematic reviews and observational studies.</p>`,
+<p>A complete submission consists of the anonymised manuscript, a separate title page, a cover letter, and the signed copyright form. All figures and tables must be placed within the manuscript document. The cover letter and the copyright form are both required. Reporting checklists are required for trials, systematic reviews and observational studies.</p>`,
     },
     {
       journalId: j.id,

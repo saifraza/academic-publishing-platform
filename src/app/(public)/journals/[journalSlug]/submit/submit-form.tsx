@@ -5,7 +5,7 @@ import { useFormStatus } from 'react-dom'
 import Link from 'next/link'
 import { submitManuscript, type SubmitState } from './actions'
 import { ARTICLE_TYPE_LABELS } from '@/lib/labels'
-import { Plus, Trash2, Check, AlertCircle, Upload, ArrowLeft, ArrowRight } from 'lucide-react'
+import { Plus, Trash2, Check, AlertCircle, Upload, ArrowLeft, ArrowRight, FileDown } from 'lucide-react'
 
 type CoAuthor = { fullName: string; email: string; affiliation: string; orcid: string }
 
@@ -84,11 +84,13 @@ export function SubmitForm({
   journalSlug,
   journalName,
   apcText,
+  copyrightFormUrl,
 }: {
   journalId: string
   journalSlug: string
   journalName: string
   apcText: string
+  copyrightFormUrl: string | null
 }) {
   const [state, formAction] = useActionState<SubmitState, FormData>(submitManuscript, {
     status: 'idle',
@@ -134,7 +136,7 @@ export function SubmitForm({
     const stepOf: Record<string, number> = {
       manuscriptTitle: 0, abstract: 0, keywords: 0, articleType: 0,
       correspondingAuthorName: 1, correspondingAuthorEmail: 1, correspondingAffiliation: 1,
-      manuscriptFile: 2,
+      manuscriptFile: 2, coverLetterFile: 2, copyrightFormFile: 2,
       declarationOriginal: 3, declarationNotElsewhere: 3, declarationEthics: 3, declarationConflict: 3,
     }
     const target = Math.min(...keys.map((k) => stepOf[k] ?? 4))
@@ -432,7 +434,7 @@ export function SubmitForm({
         <Field
           label="Manuscript file"
           required
-          hint="PDF or Word, up to 25 MB. Because review is double blind, remove author names from this file."
+          hint="PDF or Word, up to 25 MB. Include all figures and tables within this document. Because review is double blind, remove author names from the file."
           error={state.fieldErrors?.manuscriptFile}
         >
           <input
@@ -443,20 +445,47 @@ export function SubmitForm({
           />
         </Field>
 
-        <Field label="Cover letter" hint="Optional but strongly encouraged. PDF or Word.">
+        <Field
+          label="Cover letter"
+          required
+          hint="PDF or Word, up to 10 MB."
+          error={state.fieldErrors?.coverLetterFile}
+        >
           <input
             type="file"
             name="coverLetterFile"
             accept=".pdf,.doc,.docx"
-            className="block w-full rounded-sm border border-dashed border-paper-line bg-white px-4 py-4 text-[13.5px] file:mr-4 file:rounded-sm file:border-0 file:bg-paper-shade file:px-3 file:py-1.5 file:text-[13px] file:font-medium file:text-ink-800"
+            className="block w-full rounded-sm border border-dashed border-ink-300 bg-paper-shade px-4 py-5 text-[13.5px] file:mr-4 file:rounded-sm file:border-0 file:bg-ink-900 file:px-4 file:py-2 file:text-[13px] file:font-medium file:text-white hover:file:bg-ink-800"
           />
         </Field>
 
-        <Field label="Supplementary material" hint="Optional. Data, appendices or figures.">
+        <Field
+          label="Signed copyright form"
+          required
+          hint="Download the form, complete and sign it, then attach it here. PDF or Word, up to 10 MB."
+          error={state.fieldErrors?.copyrightFormFile}
+        >
+          {copyrightFormUrl ? (
+            <a
+              href={copyrightFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-2.5 inline-flex items-center gap-2 rounded-sm border border-ink-300 px-3.5 py-2 text-[13px] font-medium text-ink-800 hover:bg-paper-shade"
+            >
+              <FileDown className="h-3.5 w-3.5" aria-hidden />
+              Download the copyright form
+            </a>
+          ) : (
+            <p className="mb-2.5 rounded-sm border border-amber-200 bg-amber-50 px-3.5 py-2 text-[12.5px] leading-relaxed text-amber-900">
+              The copyright form template has not been uploaded yet. Please contact the editorial
+              office for a copy before submitting.
+            </p>
+          )}
           <input
             type="file"
-            name="supplementaryFile"
-            className="block w-full rounded-sm border border-dashed border-paper-line bg-white px-4 py-4 text-[13.5px] file:mr-4 file:rounded-sm file:border-0 file:bg-paper-shade file:px-3 file:py-1.5 file:text-[13px] file:font-medium file:text-ink-800"
+            name="copyrightFormFile"
+            accept=".pdf,.doc,.docx"
+            className="block w-full rounded-sm border border-dashed border-ink-300 bg-paper-shade px-4 py-5 text-[13.5px] file:mr-4 file:rounded-sm file:border-0 file:bg-ink-900 file:px-4 file:py-2 file:text-[13px] file:font-medium file:text-white hover:file:bg-ink-800"
           />
         </Field>
 
