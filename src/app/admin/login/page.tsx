@@ -1,9 +1,19 @@
 import type { Metadata } from 'next'
+import { db } from '@/lib/db'
 import { LoginForm } from './login-form'
 
 export const metadata: Metadata = { title: 'Editor login' }
 
-export default function LoginPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function LoginPage() {
+  const publisher = await db.publisher.findFirst({ select: { name: true, shortName: true } })
+  const mark = (publisher?.shortName || publisher?.name || 'P')
+    .replace(/^The\s+/i, '')
+    .trim()
+    .charAt(0)
+    .toUpperCase()
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-paper-shade px-5 py-12">
       <div className="w-full max-w-sm">
@@ -12,7 +22,7 @@ export default function LoginPage() {
             aria-hidden
             className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-sm bg-ink-900 font-serif text-xl font-semibold text-white"
           >
-            M
+            {mark}
           </span>
           <h1 className="font-serif text-[1.6rem] font-semibold text-ink-900">Editorial login</h1>
           <p className="mt-1.5 text-[13.5px] text-ink-600">

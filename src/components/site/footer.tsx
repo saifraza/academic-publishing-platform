@@ -34,6 +34,18 @@ export async function SiteFooter() {
                 {publisher?.email}
               </a>
             </address>
+            {publisher?.branchAddressLine1 && (
+              <address className="mt-4 not-italic text-[13px] leading-relaxed text-ink-300">
+                <span className="mb-0.5 block text-[11px] font-semibold uppercase tracking-wider text-ink-500">
+                  {publisher.branchLabel || 'Branch Office'}
+                </span>
+                {publisher.branchAddressLine1}
+                <br />
+                {[publisher.branchCity, publisher.branchState].filter(Boolean).join(', ')}
+                <br />
+                {[publisher.branchCountry, publisher.branchPostalCode].filter(Boolean).join(' ')}
+              </address>
+            )}
           </div>
 
           <div>

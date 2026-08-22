@@ -146,6 +146,7 @@ export default async function JournalHomePage({
                 ],
                 ['Articles published', String(journal._count.articles)],
                 journal.foundedYear ? ['Founded', String(journal.foundedYear)] : null,
+                journal.email ? ['Editorial email', journal.email] : null,
               ]
                 .filter((r): r is [string, string] => r !== null)
                 .map(([label, value]) => (

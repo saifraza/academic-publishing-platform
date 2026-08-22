@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Source_Serif_4 } from 'next/font/google'
 import { isDemo } from '@/lib/demo'
+import { db } from '@/lib/db'
 import './globals.css'
 
 const sans = Inter({
@@ -15,17 +16,24 @@ const serif = Source_Serif_4({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const publisher = await db.publisher.findFirst({
+    select: { name: true, tagline: true },
+  })
+  const name = publisher?.name ?? 'Academic Publishing House'
+
+  return {
   title: {
-    default: 'Meridian Academic Press',
-    template: '%s | Meridian Academic Press',
+    default: name,
+    template: `%s | ${name}`,
   },
-  description: 'Independent open-access scholarship, rigorously reviewed.',
+  description: publisher?.tagline ?? 'Open access research, peer reviewed.',
   // Belt and braces alongside robots.txt: while the sample data is fabricated,
   // no page may be indexed. Article pages carry Google Scholar citation tags.
   ...(isDemo
     ? { robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } } }
     : {}),
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

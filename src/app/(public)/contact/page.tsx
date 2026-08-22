@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { db } from '@/lib/db'
 import { ContactForm } from './contact-form'
-import { Mail, MapPin, Phone } from 'lucide-react'
+import { OfficeAddresses } from '@/components/site/office-addresses'
+import { Mail, Phone } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,17 +35,9 @@ export default async function ContactPage() {
             <h2 className="mb-5 font-serif text-[1.05rem] font-semibold text-ink-900">
               {publisher?.name}
             </h2>
-            <ul className="space-y-4 text-[13.5px] leading-relaxed text-ink-700">
-              <li className="flex gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-ink-400" aria-hidden />
-                <address className="not-italic">
-                  {publisher?.addressLine2}
-                  <br />
-                  {publisher?.city}, {publisher?.state}
-                  <br />
-                  {publisher?.country} {publisher?.postalCode}
-                </address>
-              </li>
+            {publisher && <OfficeAddresses publisher={publisher} />}
+
+            <ul className="mt-5 space-y-4 border-t border-paper-line pt-5 text-[13.5px] leading-relaxed text-ink-700">
               <li className="flex gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-ink-400" aria-hidden />
                 <a

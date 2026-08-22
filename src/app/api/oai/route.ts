@@ -68,14 +68,14 @@ function recordHeader(host: string, a: ArticleWithRelations): string {
       </header>`
 }
 
-function dublinCore(a: ArticleWithRelations): string {
+function dublinCore(a: ArticleWithRelations, publisherName: string): string {
   const url = `${SITE}/journals/${a.journal.slug}/articles/${a.slug}`
   const parts = [
     `          <dc:title>${esc(a.title)}</dc:title>`,
     ...a.authors.map((au) => `          <dc:creator>${esc(au.fullName)}</dc:creator>`),
     ...a.keywords.map((k) => `          <dc:subject>${esc(k)}</dc:subject>`),
     a.abstract ? `          <dc:description>${esc(a.abstract)}</dc:description>` : null,
-    `          <dc:publisher>Meridian Academic Press</dc:publisher>`,
+    `          <dc:publisher>${esc(publisherName)}</dc:publisher>`,
     a.publishedAt
       ? `          <dc:date>${a.publishedAt.toISOString().slice(0, 10)}</dc:date>`
       : null,
@@ -109,6 +109,9 @@ export async function GET(req: NextRequest) {
   const resumptionToken = url.searchParams.get('resumptionToken')
 
   if (!verb) return errorResponse('badVerb', 'The verb argument is missing')
+
+  const publisherRecord = await db.publisher.findFirst({ select: { name: true } })
+  const publisherName = publisherRecord?.name ?? 'Academic Publishing House'
 
   // Harvesters must not ingest fabricated sample records. Identify still
   // responds so the endpoint can be verified as wired up, but it says plainly
@@ -207,7 +210,7 @@ ${journals
     <record>
 ${recordHeader(host, article)}
       <metadata>
-${dublinCore(article)}
+${dublinCore(article, publisherName)}
       </metadata>
     </record>
   </GetRecord>`
@@ -280,7 +283,7 @@ ${dublinCore(article)}
           : `    <record>
 ${recordHeader(host, a)}
       <metadata>
-${dublinCore(a)}
+${dublinCore(a, publisherName)}
       </metadata>
     </record>`,
       )

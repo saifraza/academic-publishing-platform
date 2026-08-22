@@ -13,6 +13,14 @@ export async function SiteHeader() {
     }),
   ])
 
+  // The logo mark follows the publisher name, so renaming in Site settings
+  // does not leave a stale initial behind.
+  const mark = (publisher?.shortName || publisher?.name || 'P')
+    .replace(/^The\s+/i, '')
+    .trim()
+    .charAt(0)
+    .toUpperCase()
+
   const nav = [
     { href: '/', label: 'Home' },
     { href: '/journals', label: 'Journals' },
@@ -52,7 +60,7 @@ export async function SiteHeader() {
               aria-hidden
               className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-ink-900 font-serif text-[19px] font-semibold text-white"
             >
-              M
+              {mark}
             </span>
             <span className="min-w-0">
               <span className="block font-serif text-[18px] font-semibold leading-tight text-ink-900 group-hover:text-ink-700 sm:text-[21px]">

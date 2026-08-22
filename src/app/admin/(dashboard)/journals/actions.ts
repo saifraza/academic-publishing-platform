@@ -44,6 +44,12 @@ const journalSchema = z.object({
   apcCurrency: z.string(),
   licenseType: z.enum(LICENSE_TYPES),
   doiPrefix: z.string(),
+  email: z
+    .string()
+    .trim()
+    .refine((v) => v === '' || z.string().email().safeParse(v).success, {
+      message: 'That does not look like an email address.',
+    }),
   foundedYear: z.string(),
   primaryColor: z.string(),
   sortOrder: z.string(),
@@ -235,6 +241,7 @@ export async function saveJournal(
     apcCurrency,
     licenseType: d.licenseType,
     doiPrefix: d.doiPrefix.trim() || null,
+    email: d.email,
     ...(copyrightFormUrl ? { copyrightFormUrl } : {}),
     foundedYear,
     primaryColor: primaryColor as string,

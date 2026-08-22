@@ -61,10 +61,12 @@ export function AdminNav({
   pendingSubmissions,
   userName,
   userRole,
+  mark,
 }: {
   pendingSubmissions: number
   userName: string
   userRole: string
+  mark: string
 }) {
   const pathname = usePathname()
 
@@ -79,7 +81,7 @@ export function AdminNav({
             aria-hidden
             className="flex h-8 w-8 items-center justify-center rounded-sm bg-ink-900 font-serif text-[15px] font-semibold text-white"
           >
-            M
+            {mark}
           </span>
           <span>
             <span className="block text-[13.5px] font-semibold leading-tight text-ink-900">

@@ -44,11 +44,12 @@ export async function generateMetadata({
 
   const url = `${SITE}/journals/${journalSlug}/articles/${articleSlug}`
   const pubDate = a.publishedAt?.toISOString().slice(0, 10) ?? ''
+  const publisherName = (await db.publisher.findFirst({ select: { name: true } }))?.name ?? ''
 
   const other: Record<string, string | string[]> = {
     citation_title: a.title,
     citation_journal_title: a.journal.name,
-    citation_publisher: 'Meridian Academic Press',
+    citation_publisher: publisherName,
     citation_author: a.authors.map((x) => x.fullName),
     citation_author_institution: a.authors.map((x) => x.affiliation).filter(Boolean),
     citation_publication_date: pubDate,
@@ -105,6 +106,7 @@ export default async function ArticlePage({
 
   const url = `${SITE}/journals/${journalSlug}/articles/${articleSlug}`
   const licence = LICENSE_LABELS[a.journal.licenseType]
+  const publisherName = (await db.publisher.findFirst({ select: { name: true } }))?.name ?? ''
 
   const citation: CitationInput = {
     title: a.title,
@@ -141,7 +143,7 @@ export default async function ArticlePage({
       affiliation: x.affiliation ? { '@type': 'Organization', name: x.affiliation } : undefined,
       identifier: x.orcid ? `https://orcid.org/${x.orcid}` : undefined,
     })),
-    publisher: { '@type': 'Organization', name: 'Meridian Academic Press' },
+    publisher: { '@type': 'Organization', name: publisherName },
     isPartOf: {
       '@type': 'PublicationIssue',
       issueNumber: a.issue?.number,

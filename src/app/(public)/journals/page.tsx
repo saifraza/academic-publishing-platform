@@ -6,9 +6,12 @@ import { ArrowRight } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Journals',
-  description: 'Peer-reviewed open-access journals published by Meridian Academic Press.',
+export async function generateMetadata(): Promise<Metadata> {
+  const publisher = await db.publisher.findFirst({ select: { name: true } })
+  return {
+    title: 'Journals',
+    description: `Peer-reviewed open-access journals published by ${publisher?.name ?? 'the publisher'}.`,
+  }
 }
 
 export default async function JournalsPage() {

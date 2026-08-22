@@ -41,28 +41,32 @@ async function main() {
   await db.publisher.create({
     data: {
       id: 'default',
-      name: 'Meridian Academic Press',
-      shortName: 'Meridian',
-      tagline: 'Independent open-access scholarship, rigorously reviewed.',
+      name: 'The Seventhsky Publishers',
+      shortName: 'Seventhsky',
+      tagline: 'Open access research, peer reviewed.',
       about:
-        'Meridian Academic Press is an independent open-access publisher of peer-reviewed scholarly journals. We publish research that meets international standards of methodological rigour and ethical conduct, and we make every article freely available to read, download and reuse from the moment it is published.\n\nWe work with editorial boards drawn from active researchers in each field. Every manuscript we publish has passed double-blind peer review, and our editorial and ethical policies follow the guidance of the Committee on Publication Ethics.',
+        'The Seventhsky Publishers is an independent open-access publisher of peer-reviewed scholarly journals, with its head office in Bhopal, India and a branch office in Regina, Canada.\n\nWe publish research that meets international standards of methodological rigour and ethical conduct, and we make every article freely available to read, download and reuse from the moment it is published. Every manuscript we publish has passed double-blind peer review, and our editorial and ethical policies follow the guidance of the Committee on Publication Ethics.',
       mission:
         'To remove the paywall between rigorous research and the people who need it — clinicians, teachers, policymakers and fellow researchers — particularly in regions where subscription access remains out of reach.',
       vision:
         'A scholarly record that is open by default, reviewed with care, and permanently preserved.',
       primaryColor: '#0a2540',
-      addressLine1: 'Meridian Academic Press',
-      addressLine2: 'Editorial Office',
+      addressLine1: '11 Idgah Hills',
+      addressLine2: 'Head Office',
       city: 'Bhopal',
       state: 'Madhya Pradesh',
       country: 'India',
       postalCode: '462001',
-      email: 'editorial@meridianpress.test',
-      phone: '+91 98260 00000',
-      socials: {
-        linkedin: 'https://linkedin.com/company/example',
-        twitter: 'https://twitter.com/example',
-      },
+      branchLabel: 'Branch Office',
+      branchAddressLine1: '59 Cowburn Crescent',
+      branchAddressLine2: '',
+      branchCity: 'Regina',
+      branchState: 'Saskatchewan',
+      branchCountry: 'Canada',
+      branchPostalCode: 'S4S 5R9',
+      email: 'info@seventhskypublishers.com',
+      phone: '+91 79872 26676',
+      socials: {},
     },
   })
 
@@ -80,16 +84,17 @@ async function main() {
   })
 
   // -------------------------------------------------------------------------
-  // Journal 1 — Dentistry
+  // Journal 1 — Health and Nutrition
   // -------------------------------------------------------------------------
   console.log('Creating journals…')
-  const dental = await db.journal.create({
+  const health = await db.journal.create({
     data: {
-      slug: 'contemporary-dental-research',
-      name: 'Journal of Contemporary Dental Research',
-      shortName: 'Contemporary Dental Research',
-      abbreviation: 'J Contemp Dent Res',
-      issnOnline: '2583-0000',
+      slug: 'contemporary-research-health-nutrition',
+      name: 'Journal for Contemporary Research in Health and Nutrition',
+      shortName: 'Health and Nutrition',
+      abbreviation: 'J Contemp Res Health Nutr',
+      email: 'editor.health@seventhskypublishers.com',
+      issnOnline: null,
       primaryColor: '#0f766e',
       frequency: 'QUARTERLY',
       peerReviewType: 'DOUBLE_BLIND',
@@ -101,19 +106,19 @@ async function main() {
       isPublished: true,
       sortOrder: 1,
       subjectAreas: [
-        'Oral Surgery',
-        'Orthodontics',
-        'Prosthodontics',
-        'Endodontics',
-        'Pediatric Dentistry',
-        'Dental Public Health',
-        'Periodontology',
-        'Oral Pathology',
+        'Nutrition Science',
+        'Public Health',
+        'Dietetics',
+        'Community Nutrition',
+        'Maternal and Child Health',
+        'Food Science',
+        'Epidemiology',
+        'Health Promotion',
       ],
       description:
-        'An international, open-access, double-blind peer-reviewed journal publishing clinical and translational research across the dental sciences.',
+        'An international, open-access, double-blind peer-reviewed journal publishing clinical, community and translational research across health and nutrition.',
       aimsAndScope:
-        'The Journal of Contemporary Dental Research publishes original research, systematic reviews, case reports and short communications across the full breadth of clinical and translational dentistry.\n\nThe journal welcomes submissions in oral and maxillofacial surgery, orthodontics, prosthodontics, endodontics, periodontology, paediatric dentistry, oral pathology, oral medicine and dental public health. We are particularly interested in work that addresses clinical questions arising in resource-constrained settings, and in studies that report negative or null findings where the methodology is sound.\n\nWe do not publish work that has been submitted elsewhere, and we do not consider manuscripts that fall outside the dental and craniofacial sciences.',
+        'The Journal for Contemporary Research in Health and Nutrition publishes original research, systematic reviews, case reports and short communications across human nutrition, dietetics and public health.\n\nThe journal welcomes submissions in clinical and community nutrition, maternal and child health, nutritional epidemiology, food science, dietary assessment, health promotion and health services research. We are particularly interested in work that addresses questions arising in resource-constrained settings, and in studies that report negative or null findings where the methodology is sound.\n\nWe do not publish work that has been submitted elsewhere, and we do not consider manuscripts that fall outside health and nutrition.',
     },
   })
 
@@ -122,11 +127,12 @@ async function main() {
   // -------------------------------------------------------------------------
   const humanities = await db.journal.create({
     data: {
-      slug: 'humanities-social-perspectives',
-      name: 'International Review of Humanities and Social Perspectives',
-      shortName: 'Humanities and Social Perspectives',
-      abbreviation: 'Int Rev Humanit Soc Perspect',
-      issnOnline: '2583-0001',
+      slug: 'contemporary-research-humanities-social',
+      name: 'Journal for Contemporary Research in Humanities and Social Perspective',
+      shortName: 'Humanities and Social Perspective',
+      abbreviation: 'J Contemp Res Humanit Soc Perspect',
+      email: 'editor.humanities@seventhskypublishers.com',
+      issnOnline: null,
       primaryColor: '#7c3f00',
       frequency: 'BIANNUAL',
       peerReviewType: 'DOUBLE_BLIND',
@@ -150,7 +156,7 @@ async function main() {
       description:
         'A biannual, open-access, peer-reviewed journal for scholarship across the humanities and the interpretive social sciences.',
       aimsAndScope:
-        'The International Review of Humanities and Social Perspectives publishes scholarly articles, review essays and critical commentary across the humanities and the interpretive social sciences.\n\nWe welcome work in literary studies, history, philosophy, sociology, anthropology, political theory, linguistics and social psychology. The journal has a particular interest in interdisciplinary scholarship, in work grounded in South Asian and Global South contexts, and in methodologically explicit qualitative research.\n\nWe publish in English. Submissions that are primarily quantitative and belong more properly to the empirical social sciences are usually declined at screening.',
+        'The Journal for Contemporary Research in Humanities and Social Perspective publishes scholarly articles, review essays and critical commentary across the humanities and the interpretive social sciences.\n\nWe welcome work in literary studies, history, philosophy, sociology, anthropology, political theory, linguistics and social psychology. The journal has a particular interest in interdisciplinary scholarship, in work grounded in South Asian and Global South contexts, and in methodologically explicit qualitative research.\n\nWe publish in English. Submissions that are primarily quantitative and belong more properly to the empirical social sciences are usually declined at screening.',
     },
   })
 
@@ -159,25 +165,25 @@ async function main() {
   // -------------------------------------------------------------------------
   console.log('Creating volumes, issues and articles…')
 
-  const dentalVol = await db.volume.create({
-    data: { journalId: dental.id, number: 2, year: 2026 },
+  const healthVol = await db.volume.create({
+    data: { journalId: health.id, number: 2, year: 2026 },
   })
-  const dentalVol1 = await db.volume.create({
-    data: { journalId: dental.id, number: 1, year: 2025 },
+  const healthVol1 = await db.volume.create({
+    data: { journalId: health.id, number: 1, year: 2025 },
   })
 
-  const dentalIssue2 = await db.issue.create({
+  const healthIssue2 = await db.issue.create({
     data: {
-      volumeId: dentalVol.id,
+      volumeId: healthVol.id,
       number: 1,
       title: 'Volume 2, Issue 1',
       publishedAt: new Date('2026-03-15'),
       isPublished: true,
     },
   })
-  const dentalIssue1 = await db.issue.create({
+  const healthIssue1 = await db.issue.create({
     data: {
-      volumeId: dentalVol1.id,
+      volumeId: healthVol1.id,
       number: 2,
       title: 'Volume 1, Issue 2',
       publishedAt: new Date('2025-09-20'),
@@ -213,22 +219,22 @@ async function main() {
     published: string
   }
 
-  const dentalIssue2Articles: SeedArticle[] = [
+  const healthIssue2Articles: SeedArticle[] = [
     {
       title:
-        'Marginal bone loss around platform-switched implants at 36 months: a prospective cohort study',
+        'Iron and folic acid supplementation adherence among pregnant women in rural Madhya Pradesh: a mixed-methods study',
       abstract:
-        'Platform switching has been proposed as a means of limiting crestal bone resorption around dental implants, but medium-term evidence from routine clinical practice remains limited. This prospective cohort study followed 148 platform-switched implants placed in 96 patients across two centres over 36 months. Marginal bone level was measured radiographically at placement, 12, 24 and 36 months by two calibrated, blinded examiners. Mean marginal bone loss was 0.42 mm (SD 0.31) at 12 months, 0.61 mm (SD 0.38) at 24 months and 0.68 mm (SD 0.41) at 36 months. Implants placed in the posterior mandible showed significantly greater loss than those in the anterior maxilla. Smoking status and a history of treated periodontitis were both independently associated with greater bone loss. The results support platform switching as a stable configuration over the medium term, while confirming that patient-level risk factors continue to exert a measurable effect.',
-      keywords: ['dental implants', 'platform switching', 'marginal bone loss', 'cohort study', 'osseointegration'],
+        'Anaemia in pregnancy remains a leading contributor to maternal morbidity in central India, and adherence to iron and folic acid supplementation is persistently below programme targets. This mixed-methods study followed 486 pregnant women across fourteen rural health sub-centres over their second and third trimesters. Adherence was measured by pill count and verified against self-report, and 42 women took part in semi-structured interviews. Full adherence was achieved by 38.4% of participants. Gastrointestinal side effects, irregular supply at the sub-centre, and the belief that supplements cause a larger baby and a harder delivery were the three factors most strongly associated with discontinuation. Counselling delivered by an accredited social health activist at the point of dispensing was associated with substantially higher adherence. The findings suggest that supply reliability and structured counselling matter more than the number of contacts.',
+      keywords: ['anaemia', 'iron and folic acid', 'maternal nutrition', 'adherence', 'mixed methods'],
       type: 'RESEARCH',
       authors: [
-        { name: 'Priya Ramaswamy', aff: 'Department of Prosthodontics, Institute of Dental Sciences', country: 'India', corresponding: true, orcid: '0000-0002-1825-0097' },
-        { name: 'Arun Krishnan', aff: 'Department of Periodontology, Institute of Dental Sciences', country: 'India' },
-        { name: 'Meera Nair', aff: 'Centre for Oral Health Research', country: 'India' },
+        { name: 'Priya Ramaswamy', aff: 'Department of Community Nutrition, Institute of Health Sciences', country: 'India', corresponding: true, orcid: '0000-0002-1825-0097' },
+        { name: 'Arun Krishnan', aff: 'Department of Public Health, Institute of Health Sciences', country: 'India' },
+        { name: 'Meera Nair', aff: 'Centre for Maternal and Child Health Research', country: 'India' },
       ],
       pageStart: 1,
       pageEnd: 14,
-      doiSuffix: 'jcdr.2026.001',
+      doiSuffix: 'jcrhn.2026.001',
       featured: true,
       received: '2025-10-02',
       accepted: '2026-01-18',
@@ -236,18 +242,18 @@ async function main() {
     },
     {
       title:
-        'Accuracy of intraoral scanning versus conventional impressions for full-arch rehabilitation: a systematic review and meta-analysis',
+        'Dietary diversity scores as a predictor of micronutrient adequacy in school-aged children: a systematic review and meta-analysis',
       abstract:
-        'Digital workflows are increasingly replacing conventional impression techniques, but their accuracy in full-arch rehabilitation remains contested. We searched five databases for in vitro and in vivo studies comparing intraoral scanning with conventional impressions for full-arch cases published between 2015 and 2025. Twenty-eight studies met the inclusion criteria and 19 provided data suitable for meta-analysis. Pooled analysis showed no statistically significant difference in trueness between the two techniques for arches with fewer than six implants, but a significant advantage for conventional impressions in fully edentulous arches with widely distributed implants. Heterogeneity was substantial and largely attributable to scanner generation. The evidence supports intraoral scanning for most partial-arch indications while suggesting caution in complex full-arch cases.',
-      keywords: ['intraoral scanning', 'digital dentistry', 'impression accuracy', 'meta-analysis', 'full-arch'],
+        'Dietary diversity scores are widely used as a low-cost proxy for micronutrient adequacy, but their predictive validity in school-aged children is contested. We searched five databases for studies published between 2010 and 2025 that reported both a dietary diversity score and a biochemical or intake-based measure of micronutrient adequacy in children aged 5 to 14 years. Thirty-one studies met the inclusion criteria and 22 provided data suitable for meta-analysis. Pooled correlation between dietary diversity and mean micronutrient adequacy ratio was moderate, and considerably stronger in populations with lower overall dietary quality. Heterogeneity was substantial and largely attributable to the recall period and the number of food groups used. Dietary diversity scores appear most useful as a screening tool in food-insecure populations and least useful where diets are already varied.',
+      keywords: ['dietary diversity', 'micronutrient adequacy', 'school-aged children', 'meta-analysis', 'dietary assessment'],
       type: 'SYSTEMATIC_REVIEW',
       authors: [
-        { name: 'Sanjay Menon', aff: 'Department of Prosthodontics, College of Dental Surgery', country: 'India', corresponding: true },
-        { name: 'Fatima Sheikh', aff: 'Department of Prosthodontics, College of Dental Surgery', country: 'India' },
+        { name: 'Sanjay Menon', aff: 'Department of Dietetics, College of Allied Health Sciences', country: 'India', corresponding: true },
+        { name: 'Fatima Sheikh', aff: 'Department of Dietetics, College of Allied Health Sciences', country: 'India' },
       ],
       pageStart: 15,
       pageEnd: 32,
-      doiSuffix: 'jcdr.2026.002',
+      doiSuffix: 'jcrhn.2026.002',
       featured: true,
       received: '2025-08-14',
       accepted: '2026-01-22',
@@ -255,108 +261,108 @@ async function main() {
     },
     {
       title:
-        'Silver diamine fluoride for arresting caries in primary molars: a 24-month randomised controlled trial in a school-based programme',
+        'A school-based mid-morning snack intervention and its effect on anaemia in adolescent girls: a 24-month cluster randomised trial',
       abstract:
-        'Silver diamine fluoride offers a low-cost, non-invasive option for arresting dentine caries where restorative care is unavailable. We randomised 412 children aged 5 to 8 years attending twelve government schools to receive either biannual 38% silver diamine fluoride application or standard oral health education alone. The primary outcome was the proportion of active carious lesions arrested at 24 months, assessed by examiners blinded to allocation. Arrest was achieved in 71.3% of lesions in the intervention arm compared with 18.9% in the control arm. Parental acceptance of the resulting staining was high when it was explained in advance. The intervention was well tolerated with no adverse events. Silver diamine fluoride applied within a school-based programme substantially reduced untreated active caries in this population.',
-      keywords: ['silver diamine fluoride', 'dental caries', 'paediatric dentistry', 'randomised controlled trial', 'public health'],
+        'Adolescent anaemia is a persistent public health problem in India, and school-based interventions offer a route to reach girls who rarely attend health facilities. We randomised 412 girls aged 12 to 15 years across twelve government schools to receive either a fortified mid-morning snack on school days or standard nutrition education alone. The primary outcome was change in haemoglobin concentration at 24 months, assessed by staff blinded to allocation. Mean haemoglobin rose by 1.24 g/dL in the intervention arm compared with 0.31 g/dL in the control arm. The proportion classified as anaemic fell from 61.2% to 34.7% in the intervention arm. Acceptability was high and wastage was low once the snack was served during the existing break rather than after school. A fortified snack delivered within the school day materially reduced anaemia in this population.',
+      keywords: ['adolescent anaemia', 'school feeding', 'food fortification', 'cluster randomised trial', 'public health nutrition'],
       type: 'RESEARCH',
       authors: [
-        { name: 'Lakshmi Iyer', aff: 'Department of Pedodontics and Preventive Dentistry', country: 'India', corresponding: true, orcid: '0000-0001-5109-3700' },
-        { name: 'Rahul Deshpande', aff: 'Department of Public Health Dentistry', country: 'India' },
+        { name: 'Lakshmi Iyer', aff: 'Department of Public Health Nutrition', country: 'India', corresponding: true, orcid: '0000-0001-5109-3700' },
+        { name: 'Rahul Deshpande', aff: 'Department of Community Medicine', country: 'India' },
         { name: 'Anita Joseph', aff: 'School Health Programme, District Health Office', country: 'India' },
       ],
       pageStart: 33,
       pageEnd: 47,
-      doiSuffix: 'jcdr.2026.003',
+      doiSuffix: 'jcrhn.2026.003',
       received: '2025-09-30',
       accepted: '2026-02-01',
       published: '2026-03-15',
     },
     {
-      title: 'Management of a dens invaginatus type III with apical periodontitis using guided endodontic access',
+      title: 'Refeeding syndrome in a young adult with prolonged undiagnosed coeliac disease: a case report',
       abstract:
-        'Dens invaginatus type III presents a considerable endodontic challenge because of its complex internal anatomy and the difficulty of locating canal orifices without excessive tissue removal. This case report describes a 19-year-old male presenting with a symptomatic maxillary lateral incisor with a type III invagination and an associated periapical lesion. Cone-beam computed tomography was used to plan a three-dimensionally printed access guide. Guided access permitted conservative preparation, and the invagination and the main canal were treated separately. At 18-month review the patient was asymptomatic with radiographic evidence of periapical healing. Guided endodontic access is a practical adjunct in anatomically complex cases where conventional access risks perforation.',
-      keywords: ['dens invaginatus', 'guided endodontics', 'cone-beam computed tomography', 'case report', 'apical periodontitis'],
+        'Refeeding syndrome is an underrecognised complication of nutritional rehabilitation and can be fatal if electrolyte shifts are not anticipated. This case report describes a 21-year-old man presenting with a two-year history of weight loss, diarrhoea and fatigue, subsequently diagnosed with coeliac disease. Nutritional support was commenced at the referring centre without electrolyte monitoring, and on day three he developed severe hypophosphataemia with peripheral oedema and confusion. Feeding was reduced, phosphate and thiamine were replaced, and he recovered fully over ten days. At six-month review he had regained 11 kg on a gluten-free diet with normal biochemistry. The case illustrates that the risk of refeeding syndrome is determined by the duration of undernutrition rather than by body mass index alone.',
+      keywords: ['refeeding syndrome', 'coeliac disease', 'hypophosphataemia', 'case report', 'nutritional rehabilitation'],
       type: 'CASE_REPORT',
       authors: [
-        { name: 'Vikram Sethi', aff: 'Department of Conservative Dentistry and Endodontics', country: 'India', corresponding: true },
+        { name: 'Vikram Sethi', aff: 'Department of Clinical Nutrition', country: 'India', corresponding: true },
       ],
       pageStart: 48,
       pageEnd: 55,
-      doiSuffix: 'jcdr.2026.004',
+      doiSuffix: 'jcrhn.2026.004',
       received: '2025-11-11',
       accepted: '2026-02-05',
       published: '2026-03-15',
     },
     {
-      title: 'Reporting standards in dental research: why we are asking authors for more',
+      title: 'Reporting standards in nutrition research: why we are asking authors for more',
       abstract:
-        'This editorial sets out the journal’s position on reporting standards and explains the checklists we will require from the next issue onwards. We discuss the persistent under-reporting of randomisation and blinding procedures in the dental literature, the consequences for evidence synthesis, and the practical steps authors can take before submission.',
+        'This editorial sets out the journal’s position on reporting standards and explains the checklists we will require from the next issue onwards. We discuss the persistent under-reporting of dietary assessment methods and randomisation procedures in the nutrition literature, the consequences for evidence synthesis, and the practical steps authors can take before submission.',
       keywords: ['editorial', 'reporting standards', 'CONSORT', 'research integrity'],
       type: 'EDITORIAL',
       authors: [
-        { name: 'Ashok Varghese', aff: 'Editor-in-Chief, Journal of Contemporary Dental Research', country: 'India', corresponding: true },
+        { name: 'Ashok Varghese', aff: 'Editor-in-Chief, Journal for Contemporary Research in Health and Nutrition', country: 'India', corresponding: true },
       ],
       pageStart: 56,
       pageEnd: 58,
-      doiSuffix: 'jcdr.2026.005',
+      doiSuffix: 'jcrhn.2026.005',
       received: '2026-01-05',
       accepted: '2026-01-30',
       published: '2026-03-15',
     },
   ]
 
-  const dentalIssue1Articles: SeedArticle[] = [
+  const healthIssue1Articles: SeedArticle[] = [
     {
       title:
-        'Prevalence and severity of molar incisor hypomineralisation among schoolchildren in central India: a cross-sectional survey',
+        'Prevalence of stunting and its household determinants among children under five in central India: a cross-sectional survey',
       abstract:
-        'Molar incisor hypomineralisation is an increasingly recognised developmental defect with significant treatment implications, yet prevalence data from central India are sparse. We examined 1,842 children aged 8 to 10 years across 24 randomly selected schools using European Academy of Paediatric Dentistry criteria. Overall prevalence was 13.7%, with severe defects in 4.1% of affected children. First permanent molars were involved in all cases and incisors in 61%. Children with molar incisor hypomineralisation reported significantly higher rates of dentine hypersensitivity and were more likely to have received a restoration or extraction. The findings indicate a substantial and largely unmet treatment need in this population.',
-      keywords: ['molar incisor hypomineralisation', 'prevalence', 'epidemiology', 'paediatric dentistry', 'India'],
+        'Stunting remains the most common form of undernutrition among Indian children under five, and district-level determinants are needed to target interventions. We surveyed 1,842 children aged 6 to 59 months across 24 randomly selected villages using WHO growth standards. Overall stunting prevalence was 33.7%, with severe stunting in 11.4%. Maternal education below secondary level, household food insecurity, absence of a toilet, and birth interval under 24 months were all independently associated with stunting after adjustment. Children in households receiving supplementary nutrition through an anganwadi centre had significantly lower odds of stunting. The findings indicate that water and sanitation and maternal education are as consequential as food intake in this population.',
+      keywords: ['stunting', 'child undernutrition', 'prevalence', 'social determinants', 'India'],
       type: 'RESEARCH',
       authors: [
-        { name: 'Neha Agarwal', aff: 'Department of Pedodontics and Preventive Dentistry', country: 'India', corresponding: true },
-        { name: 'Suresh Patil', aff: 'Department of Public Health Dentistry', country: 'India' },
+        { name: 'Neha Agarwal', aff: 'Department of Community Nutrition', country: 'India', corresponding: true },
+        { name: 'Suresh Patil', aff: 'Department of Public Health', country: 'India' },
       ],
       pageStart: 61,
       pageEnd: 74,
-      doiSuffix: 'jcdr.2025.011',
+      doiSuffix: 'jcrhn.2025.011',
       received: '2025-03-19',
       accepted: '2025-08-02',
       published: '2025-09-20',
     },
     {
       title:
-        'Adjunctive photodynamic therapy in the non-surgical management of stage III periodontitis: a split-mouth randomised trial',
+        'Effect of a structured dietary counselling programme on glycaemic control in newly diagnosed type 2 diabetes: a randomised trial',
       abstract:
-        'Antimicrobial photodynamic therapy has been proposed as an adjunct to scaling and root planing, but reported effect sizes vary widely. In this split-mouth randomised trial, 64 patients with stage III grade B periodontitis received scaling and root planing in all quadrants, with two randomly allocated quadrants additionally receiving photodynamic therapy. Probing pocket depth, clinical attachment level and bleeding on probing were recorded at baseline, three and six months. Adjunctive therapy produced a statistically significant additional reduction in probing pocket depth at three months, but the difference was no longer significant at six months. The clinical relevance of the short-term benefit is questionable and does not currently justify routine use.',
-      keywords: ['photodynamic therapy', 'periodontitis', 'scaling and root planing', 'randomised trial', 'split-mouth'],
+        'Dietary counselling is a cornerstone of type 2 diabetes management, but the intensity required to change outcomes is unclear in primary care settings. In this randomised trial, 164 adults with newly diagnosed type 2 diabetes received either structured counselling delivered by a dietitian over six sessions or standard advice at the point of diagnosis. HbA1c, weight and waist circumference were recorded at baseline, three and six months. The structured arm achieved a significantly greater reduction in HbA1c at three months, and the difference was sustained at six months, alongside a modest weight reduction. Attendance at all six sessions was the strongest predictor of response. Structured counselling delivered in primary care produced clinically meaningful improvements without medication escalation.',
+      keywords: ['type 2 diabetes', 'dietary counselling', 'glycaemic control', 'randomised trial', 'primary care'],
       type: 'RESEARCH',
       authors: [
-        { name: 'Imran Qureshi', aff: 'Department of Periodontology', country: 'India', corresponding: true, orcid: '0000-0003-4412-8890' },
-        { name: 'Kavita Rao', aff: 'Department of Periodontology', country: 'India' },
-        { name: 'Deepak Chandra', aff: 'Department of Oral Microbiology', country: 'India' },
+        { name: 'Imran Qureshi', aff: 'Department of Clinical Nutrition and Dietetics', country: 'India', corresponding: true, orcid: '0000-0003-4412-8890' },
+        { name: 'Kavita Rao', aff: 'Department of Clinical Nutrition and Dietetics', country: 'India' },
+        { name: 'Deepak Chandra', aff: 'Department of Endocrinology', country: 'India' },
       ],
       pageStart: 75,
       pageEnd: 88,
-      doiSuffix: 'jcdr.2025.012',
+      doiSuffix: 'jcrhn.2025.012',
       received: '2025-02-27',
       accepted: '2025-07-30',
       published: '2025-09-20',
     },
     {
-      title: 'Three-dimensional printing in oral and maxillofacial surgery: current applications and practical limits',
+      title: 'Food fortification programmes in South Asia: current evidence and practical limits',
       abstract:
-        'Additive manufacturing has moved rapidly from research settings into routine maxillofacial practice. This review surveys current applications across orthognathic planning, reconstruction, implantology and surgical guides, and examines the evidence for each. We give particular attention to the practical constraints that determine whether a unit can adopt these techniques: material certification, sterilisation protocols, in-house versus outsourced production, and the regulatory position on patient-specific devices. We conclude that the principal barrier to wider adoption is no longer printer cost but the absence of validated workflows and clear regulatory guidance in many jurisdictions.',
-      keywords: ['three-dimensional printing', 'additive manufacturing', 'maxillofacial surgery', 'surgical guides', 'review'],
+        'Large-scale food fortification has moved rapidly from pilot projects into national policy across South Asia. This review surveys current programmes covering salt, wheat flour, edible oil, milk and rice, and examines the evidence for each. We give particular attention to the practical constraints that determine whether a programme delivers: premix supply and cost, quality assurance at small and medium mills, the share of the target population reached through informal supply chains, and the regulatory capacity required for enforcement. We conclude that the principal barrier to impact is no longer technical feasibility but monitoring capacity and coverage of the informal sector, where the most nutritionally vulnerable households buy most of their food.',
+      keywords: ['food fortification', 'micronutrients', 'South Asia', 'public health policy', 'review'],
       type: 'REVIEW',
       authors: [
-        { name: 'Ravi Shankar', aff: 'Department of Oral and Maxillofacial Surgery', country: 'India', corresponding: true },
-        { name: 'Elena Fischer', aff: 'Department of Craniofacial Surgery, University Hospital', country: 'Germany' },
+        { name: 'Ravi Shankar', aff: 'Department of Food Science and Nutrition', country: 'India', corresponding: true },
+        { name: 'Elena Fischer', aff: 'Department of Nutritional Sciences, University Hospital', country: 'Germany' },
       ],
       pageStart: 89,
       pageEnd: 106,
-      doiSuffix: 'jcdr.2025.013',
+      doiSuffix: 'jcrhn.2025.013',
       received: '2025-01-15',
       accepted: '2025-07-11',
       published: '2025-09-20',
@@ -488,8 +494,8 @@ async function main() {
     }
   }
 
-  await createArticles(dental.id, dentalIssue2.id, dental.doiPrefix!, dentalIssue2Articles)
-  await createArticles(dental.id, dentalIssue1.id, dental.doiPrefix!, dentalIssue1Articles)
+  await createArticles(health.id, healthIssue2.id, health.doiPrefix!, healthIssue2Articles)
+  await createArticles(health.id, healthIssue1.id, health.doiPrefix!, healthIssue1Articles)
   await createArticles(humanities.id, humIssue.id, humanities.doiPrefix!, humanitiesArticles)
 
   // -------------------------------------------------------------------------
@@ -497,16 +503,16 @@ async function main() {
   // -------------------------------------------------------------------------
   console.log('Creating editorial boards…')
 
-  const dentalBoard: [string, Designation, string, string][] = [
-    ['Ashok Varghese', 'EDITOR_IN_CHIEF', 'Institute of Dental Sciences', 'India'],
-    ['Helena Marsh', 'ASSOCIATE_EDITOR', 'Faculty of Dentistry, University of Leeds', 'United Kingdom'],
-    ['Priya Ramaswamy', 'SECTION_EDITOR', 'Department of Prosthodontics, Institute of Dental Sciences', 'India'],
-    ['Imran Qureshi', 'SECTION_EDITOR', 'Department of Periodontology', 'India'],
-    ['Lakshmi Iyer', 'SECTION_EDITOR', 'Department of Pedodontics and Preventive Dentistry', 'India'],
-    ['Ravi Shankar', 'SECTION_EDITOR', 'Department of Oral and Maxillofacial Surgery', 'India'],
-    ['Chen Wei', 'BOARD_MEMBER', 'School of Stomatology, Peking University', 'China'],
-    ['Maria Santos', 'BOARD_MEMBER', 'Faculty of Dentistry, University of São Paulo', 'Brazil'],
-    ['Deepak Chandra', 'MANAGING_EDITOR', 'Meridian Academic Press', 'India'],
+  const healthBoard: [string, Designation, string, string][] = [
+    ['Ashok Varghese', 'EDITOR_IN_CHIEF', 'Institute of Health Sciences', 'India'],
+    ['Helena Marsh', 'ASSOCIATE_EDITOR', 'School of Food Science and Nutrition, University of Leeds', 'United Kingdom'],
+    ['Priya Ramaswamy', 'SECTION_EDITOR', 'Department of Community Nutrition, Institute of Health Sciences', 'India'],
+    ['Imran Qureshi', 'SECTION_EDITOR', 'Department of Clinical Nutrition and Dietetics', 'India'],
+    ['Lakshmi Iyer', 'SECTION_EDITOR', 'Department of Public Health Nutrition', 'India'],
+    ['Ravi Shankar', 'SECTION_EDITOR', 'Department of Food Science and Nutrition', 'India'],
+    ['Chen Wei', 'BOARD_MEMBER', 'School of Public Health, Peking University', 'China'],
+    ['Maria Santos', 'BOARD_MEMBER', 'Faculty of Public Health, University of São Paulo', 'Brazil'],
+    ['Deepak Chandra', 'MANAGING_EDITOR', 'The Seventhsky Publishers', 'India'],
   ]
 
   const humBoard: [string, Designation, string, string][] = [
@@ -518,9 +524,9 @@ async function main() {
     ['James Whitfield', 'BOARD_MEMBER', 'School of Anthropology, University of Edinburgh', 'United Kingdom'],
   ]
 
-  for (const [i, [fullName, designation, affiliation, country]] of dentalBoard.entries()) {
+  for (const [i, [fullName, designation, affiliation, country]] of healthBoard.entries()) {
     await db.editorialMember.create({
-      data: { journalId: dental.id, fullName, designation, affiliation, country, sortOrder: i },
+      data: { journalId: health.id, fullName, designation, affiliation, country, sortOrder: i },
     })
   }
   for (const [i, [fullName, designation, affiliation, country]] of humBoard.entries()) {
@@ -539,7 +545,7 @@ async function main() {
       slug: 'publication-ethics',
       title: 'Publication Ethics and Malpractice Statement',
       navGroup: 'Ethics',
-      body: `<p>Meridian Academic Press follows the Core Practices of the Committee on Publication Ethics (COPE). This statement applies to every journal we publish and to every party involved in the act of publishing: authors, editors, reviewers and the publisher.</p>
+      body: `<p>The Seventhsky Publishers follows the Core Practices of the Committee on Publication Ethics (COPE). This statement applies to every journal we publish and to every party involved in the act of publishing: authors, editors, reviewers and the publisher.</p>
 <h2>Authorship</h2>
 <p>Authorship is limited to those who have made a substantial contribution to the conception, design, execution or interpretation of the reported study. All those who have made substantial contributions must be listed as co-authors. Those who participated in a lesser capacity should be acknowledged. The corresponding author is responsible for ensuring that all listed authors have approved the final manuscript and agreed to its submission.</p>
 <h2>Plagiarism</h2>
@@ -577,7 +583,7 @@ async function main() {
       slug: 'open-access-policy',
       title: 'Open Access Policy',
       navGroup: 'Editorial Policies',
-      body: `<p>All journals published by Meridian Academic Press are fully open access. Every article is freely available to read, download and reuse from the moment of publication. There is no subscription, no embargo and no paywall.</p>
+      body: `<p>All journals published by The Seventhsky Publishers are fully open access. Every article is freely available to read, download and reuse from the moment of publication. There is no subscription, no embargo and no paywall.</p>
 <h2>Licensing</h2>
 <p>Articles are published under a Creative Commons licence, stated on each article page and on each journal's home page. Authors retain copyright in their work.</p>
 <h2>Author charges</h2>
@@ -685,7 +691,7 @@ async function main() {
     },
   ]
 
-  for (const p of journalPageTemplates(dental)) await db.page.create({ data: p })
+  for (const p of journalPageTemplates(health)) await db.page.create({ data: p })
   for (const p of journalPageTemplates(humanities)) await db.page.create({ data: p })
 
   // -------------------------------------------------------------------------
@@ -695,42 +701,42 @@ async function main() {
 
   await db.announcement.create({
     data: {
-      title: 'Call for papers: special issue on artificial intelligence in clinical dentistry',
-      journalId: dental.id,
-      body: 'The Journal of Contemporary Dental Research invites submissions for a special issue examining the clinical application and evaluation of machine learning methods in dentistry. We are particularly interested in prospective evaluations and in studies that report where these methods failed. Deadline for submissions: 30 November 2026.',
+      title: 'Call for papers: special issue on nutrition in the first 1000 days',
+      journalId: health.id,
+      body: 'The Journal for Contemporary Research in Health and Nutrition invites submissions for a special issue examining nutrition interventions during pregnancy and the first two years of life. We are particularly interested in implementation studies and in trials that report where interventions did not work. Deadline for submissions: 30 November 2026.',
       publishedAt: new Date('2026-07-01'),
     },
   })
 
   await db.announcement.create({
     data: {
-      title: 'International Review of Humanities and Social Perspectives publishes its inaugural issue',
+      title: 'Journal for Contemporary Research in Humanities and Social Perspective publishes its inaugural issue',
       journalId: humanities.id,
-      body: 'We are pleased to announce the publication of the first issue of the International Review of Humanities and Social Perspectives, comprising three research articles and an opening editorial. The journal is now open for submissions for Volume 1, Issue 2.',
+      body: 'We are pleased to announce the publication of the first issue of the Journal for Contemporary Research in Humanities and Social Perspective, comprising three research articles and an opening editorial. The journal is now open for submissions for Volume 1, Issue 2.',
       publishedAt: new Date('2026-06-30'),
     },
   })
 
   const reviewers = [
-    { fullName: 'Nandini Raghavan', email: 'n.raghavan@example.test', affiliation: 'Department of Oral Pathology', country: 'India', expertise: ['Oral Pathology', 'Histology'] },
-    { fullName: 'Peter Lindqvist', email: 'p.lindqvist@example.test', affiliation: 'Faculty of Odontology, Malmö University', country: 'Sweden', expertise: ['Periodontology', 'Implantology'] },
+    { fullName: 'Nandini Raghavan', email: 'n.raghavan@example.test', affiliation: 'Department of Nutritional Biochemistry', country: 'India', expertise: ['Nutritional Biochemistry', 'Micronutrients'] },
+    { fullName: 'Peter Lindqvist', email: 'p.lindqvist@example.test', affiliation: 'Department of Food Science and Nutrition, Malmö University', country: 'Sweden', expertise: ['Public Health Nutrition', 'Dietary Assessment'] },
     { fullName: 'Sarah Mensah', email: 's.mensah@example.test', affiliation: 'School of Social Sciences, University of Ghana', country: 'Ghana', expertise: ['Sociology', 'Qualitative Methods'] },
   ]
   for (const r of reviewers) await db.reviewer.create({ data: r })
 
   await db.submission.create({
     data: {
-      trackingId: 'JCDR-2026-0041',
-      journalId: dental.id,
+      trackingId: 'JCRHN-2026-0041',
+      journalId: health.id,
       manuscriptTitle:
-        'Fluoride varnish application intervals in high-caries-risk adolescents: a pragmatic cluster trial',
+        'Vitamin D supplementation intervals in adolescents with low sun exposure: a pragmatic cluster trial',
       abstract:
-        'A pragmatic cluster-randomised trial comparing six-monthly and three-monthly fluoride varnish application in adolescents identified as high caries risk across eighteen schools.',
-      keywords: ['fluoride varnish', 'caries prevention', 'adolescents', 'cluster trial'],
+        'A pragmatic cluster-randomised trial comparing six-monthly and three-monthly vitamin D supplementation in adolescents with low sun exposure across eighteen schools.',
+      keywords: ['vitamin D', 'supplementation', 'adolescents', 'cluster trial'],
       articleType: 'RESEARCH',
       correspondingAuthorName: 'Rohit Malhotra',
       correspondingAuthorEmail: 'r.malhotra@example.test',
-      correspondingAffiliation: 'Department of Public Health Dentistry',
+      correspondingAffiliation: 'Department of Public Health Nutrition',
       declarationAccepted: true,
       status: 'UNDER_REVIEW',
       internalNotes: 'Two reviewers invited on 12 July. One accepted, awaiting second response.',
@@ -740,7 +746,7 @@ async function main() {
 
   await db.submission.create({
     data: {
-      trackingId: 'IRHSP-2026-0012',
+      trackingId: 'JCRHSP-2026-0012',
       journalId: humanities.id,
       manuscriptTitle: 'Memory, monument and municipal politics in three Deccan towns',
       abstract:

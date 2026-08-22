@@ -25,6 +25,7 @@ export type JournalInitial = {
   apcCurrency?: string
   licenseType?: string
   doiPrefix?: string | null
+  email?: string
   copyrightFormUrl?: string | null
   foundedYear?: number | null
   primaryColor?: string
@@ -328,6 +329,20 @@ export function JournalForm({ initial }: { initial: JournalInitial }) {
             name="doiPrefix"
             defaultValue={initial.doiPrefix ?? ''}
             placeholder="10.12345"
+            className={input}
+          />
+        </Field>
+
+        <Field
+          label="Editorial email for this journal"
+          error={state.fieldErrors?.email}
+          hint="Where authors write about this journal specifically. Leave blank to use the publisher's main address."
+        >
+          <input
+            name="email"
+            type="email"
+            defaultValue={initial.email ?? ''}
+            placeholder="editor.example@yourdomain.com"
             className={input}
           />
         </Field>

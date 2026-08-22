@@ -38,6 +38,13 @@ const settingsSchema = z.object({
   state: z.string().trim(),
   country: z.string().trim(),
   postalCode: z.string().trim(),
+  branchLabel: z.string().trim(),
+  branchAddressLine1: z.string().trim(),
+  branchAddressLine2: z.string().trim(),
+  branchCity: z.string().trim(),
+  branchState: z.string().trim(),
+  branchCountry: z.string().trim(),
+  branchPostalCode: z.string().trim(),
   email: z
     .string()
     .trim()
@@ -103,6 +110,13 @@ export async function saveSettings(
     state: d.state,
     country: d.country,
     postalCode: d.postalCode,
+    branchLabel: d.branchLabel,
+    branchAddressLine1: d.branchAddressLine1,
+    branchAddressLine2: d.branchAddressLine2,
+    branchCity: d.branchCity,
+    branchState: d.branchState,
+    branchCountry: d.branchCountry,
+    branchPostalCode: d.branchPostalCode,
     email: d.email,
     phone: d.phone,
     socials,

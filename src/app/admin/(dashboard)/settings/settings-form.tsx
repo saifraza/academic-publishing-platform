@@ -19,6 +19,13 @@ export type SettingsInitial = {
   state: string
   country: string
   postalCode: string
+  branchLabel: string
+  branchAddressLine1: string
+  branchAddressLine2: string
+  branchCity: string
+  branchState: string
+  branchCountry: string
+  branchPostalCode: string
   email: string
   phone: string
   linkedin: string
@@ -234,6 +241,42 @@ export function SettingsForm({ initial }: { initial: SettingsInitial }) {
           <Field label="Country">
             <input name="country" defaultValue={initial.country} className={input} />
           </Field>
+        </div>
+      </Section>
+
+      {/* --------------------------------------------------- Branch office */}
+      <Section
+        title="Branch office"
+        hint="A second address, shown under the head office wherever your contact details appear. Leave it blank if you only have one office."
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="What to call it" hint="For example “Branch Office” or “Canada Office”.">
+            <input name="branchLabel" defaultValue={initial.branchLabel} placeholder="Branch Office" className={input} />
+          </Field>
+          <Field label="Address line 1">
+            <input name="branchAddressLine1" defaultValue={initial.branchAddressLine1} className={input} />
+          </Field>
+          <Field label="Address line 2" hint="Optional.">
+            <input name="branchAddressLine2" defaultValue={initial.branchAddressLine2} className={input} />
+          </Field>
+          <Field label="Town or city">
+            <input name="branchCity" defaultValue={initial.branchCity} className={input} />
+          </Field>
+          <Field label="State or province">
+            <input name="branchState" defaultValue={initial.branchState} className={input} />
+          </Field>
+          <Field label="Postal code">
+            <input name="branchPostalCode" defaultValue={initial.branchPostalCode} className={input} />
+          </Field>
+          <Field label="Country">
+            <input name="branchCountry" defaultValue={initial.branchCountry} className={input} />
+          </Field>
+        </div>
+      </Section>
+
+      {/* ------------------------------------------------------- Reach us */}
+      <Section title="How people reach you" hint="Shown on the contact page and in the footer.">
+        <div className="grid gap-4 sm:grid-cols-2">
 
           <Field
             label="Email"

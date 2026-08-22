@@ -29,6 +29,17 @@ model Publisher {
   postalCode     String   @default("")
   email          String   @default("")
   phone          String   @default("")
+
+  // Optional second office. Shown alongside the head office wherever the
+  // publisher's contact details appear; hidden entirely when left blank.
+  branchLabel        String @default("")
+  branchAddressLine1 String @default("")
+  branchAddressLine2 String @default("")
+  branchCity         String @default("")
+  branchState        String @default("")
+  branchCountry      String @default("")
+  branchPostalCode   String @default("")
+
   socials        Json     @default("{}")
   registeredName String   @default("")
   gstin          String   @default("")
@@ -47,6 +58,8 @@ model Journal {
   abbreviation   String          @default("")
   issnOnline     String?
   issnPrint      String?
+  // Each journal has its own editorial address; falls back to the publisher's.
+  email          String          @default("")
   aimsAndScope   String          @default("") @db.Text
   description    String          @default("") @db.Text
   coverImageUrl  String?

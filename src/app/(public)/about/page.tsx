@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db } from '@/lib/db'
+import { OfficeAddresses } from '@/components/site/office-addresses'
 import { ArrowRight } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -90,15 +91,7 @@ export default async function AboutPage() {
             <h2 className="mb-4 font-serif text-[1.05rem] font-semibold text-ink-900">
               Editorial office
             </h2>
-            <address className="not-italic text-[13.5px] leading-relaxed text-ink-700">
-              {publisher?.name}
-              <br />
-              {publisher?.addressLine2}
-              <br />
-              {publisher?.city}, {publisher?.state}
-              <br />
-              {publisher?.country} {publisher?.postalCode}
-            </address>
+            {publisher && <OfficeAddresses publisher={publisher} />}
             <p className="mt-4 text-[13.5px]">
               <a
                 href={`mailto:${publisher?.email}`}

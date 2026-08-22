@@ -10,9 +10,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await auth()
   if (!session?.user) redirect('/admin/login')
 
-  const pendingSubmissions = await db.submission.count({
-    where: { status: { in: ['SUBMITTED', 'UNDER_SCREENING'] } },
-  })
+  const [pendingSubmissions, publisher] = await Promise.all([
+    db.submission.count({ where: { status: { in: ['SUBMITTED', 'UNDER_SCREENING'] } } }),
+    db.publisher.findFirst({ select: { name: true, shortName: true } }),
+  ])
+
+  const mark = (publisher?.shortName || publisher?.name || 'P')
+    .replace(/^The\s+/i, '')
+    .trim()
+    .charAt(0)
+    .toUpperCase()
 
   return (
     <div className="flex min-h-screen bg-paper-shade">
@@ -20,6 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         pendingSubmissions={pendingSubmissions}
         userName={session.user.name ?? 'Editor'}
         userRole={session.user.role}
+        mark={mark}
       />
 
       <div className="flex min-w-0 flex-1 flex-col">
