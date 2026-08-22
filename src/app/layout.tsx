@@ -17,9 +17,15 @@ const serif = Source_Serif_4({
 })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const publisher = await db.publisher.findFirst({
-    select: { name: true, tagline: true },
-  })
+  // Pages such as /_not-found are prerendered during the Docker build, when no
+  // database is reachable. Fall back to a static title rather than failing the
+  // whole build.
+  let publisher: { name: string; tagline: string } | null = null
+  try {
+    publisher = await db.publisher.findFirst({ select: { name: true, tagline: true } })
+  } catch {
+    publisher = null
+  }
   const name = publisher?.name ?? 'Academic Publishing House'
 
   return {
