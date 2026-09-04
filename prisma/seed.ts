@@ -1,10 +1,16 @@
 import { PrismaClient, ArticleType, Designation } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+import { randomBytes } from 'crypto'
 
 const db = new PrismaClient()
 
-const ADMIN_EMAIL = 'admin@publisher.test'
-const ADMIN_PASSWORD = 'Publish!2026'
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? 'admin@publisher.test'
+
+// Never hardcode this: the repository is shared, and a password in source is a
+// password in the git history forever. Set SEED_ADMIN_PASSWORD when seeding a
+// real deployment; otherwise a random one is generated and printed below.
+const ADMIN_PASSWORD =
+  process.env.SEED_ADMIN_PASSWORD ?? `Seed-${randomBytes(9).toString('base64url')}`
 
 async function main() {
   // This seed deletes everything before inserting. It runs as part of the
@@ -782,6 +788,9 @@ async function main() {
   console.log(`  Submissions:       ${counts.submissions}`)
   console.log('─────────────────────────────────────────────')
   console.log('  ADMIN LOGIN')
+  if (!process.env.SEED_ADMIN_PASSWORD) {
+    console.log('  (generated — set SEED_ADMIN_PASSWORD to choose your own)')
+  }
   console.log(`  Email:    ${ADMIN_EMAIL}`)
   console.log(`  Password: ${ADMIN_PASSWORD}`)
   console.log('─────────────────────────────────────────────\n')

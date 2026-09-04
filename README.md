@@ -18,21 +18,22 @@ createdb aman_journals
 npm install
 cp .env.example .env     # then set DATABASE_URL to your local database
 npx prisma db push
-npm run db:seed
+SEED_ADMIN_PASSWORD="choose-a-strong-one" npm run db:seed
 npm run dev
 ```
 
 Open <http://localhost:3000>.
 
-The seed prints the admin login when it finishes. With the bundled seed data it is:
+The seed prints the admin login when it finishes. Set `SEED_ADMIN_PASSWORD` to
+choose one; leave it unset and a random password is generated and printed.
 
 | | |
 |---|---|
 | **URL** | <http://localhost:3000/admin> |
-| **Email** | `admin@publisher.test` |
-| **Password** | `Publish!2026` |
+| **Email** | `admin@publisher.test`, or `SEED_ADMIN_EMAIL` |
+| **Password** | whatever the seed printed |
 
-Change this before the site is public.
+The password is deliberately not stored in this repository.
 
 ---
 
